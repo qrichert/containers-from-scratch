@@ -1,0 +1,12 @@
+/.idea/
+/.vscode/
+
+/_wip/
+/target/
+
+*.o
+
+.DS_Store
+*.swp
+
+/alpine_fs/
