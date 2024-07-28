@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+if [[ ! -d ./alpine_fs/ ]]; then
+    mkdir alpine_fs
+    tar -xf ./alpine_fs.tar.gz -C ./alpine_fs/
+fi
+make build > /dev/null
+sudo ./target/containers-from-scratch $@
