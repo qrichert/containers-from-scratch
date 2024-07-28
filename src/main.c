@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 void run(int, char*[]);
 
@@ -16,12 +17,10 @@ int main(int argc, char* argv[]) {
 }
 
 void run(int argc, char* argv[]) {
-    printf("running: '");
-    for (int i = 0; i < argc; ++i) {
-        printf("%s", argv[i]);
-        if (i < argc - 1) {
-            printf(" ");
-        }
-    }
-    printf("'\n");
+    char* args[argc + 1];
+    memcpy(args, argv, argc * sizeof(char*));
+    args[argc] = NULL; // Args to `execvp()` must be NULL-terminated.
+
+    execvp(args[0], args);
+    fprintf(stderr, "'%s' not found.\n", args[0]);
 }
