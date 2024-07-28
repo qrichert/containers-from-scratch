@@ -1,6 +1,9 @@
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <sched.h>
 
 void run(int, char*[]);
 
@@ -20,6 +23,10 @@ void run(int argc, char* argv[]) {
     char* args[argc + 1];
     memcpy(args, argv, argc * sizeof(char*));
     args[argc] = NULL; // Args to `execvp()` must be NULL-terminated.
+
+    unshare(
+        CLONE_NEWUTS // Hostname.
+    );
 
     execvp(args[0], args);
     fprintf(stderr, "'%s' not found.\n", args[0]);
