@@ -28,6 +28,8 @@ void run(int argc, char* argv[]) {
         CLONE_NEWUTS // Hostname.
     );
 
+    sethostname("dockus", strlen("dockus"));
+
     execvp(args[0], args);
     fprintf(stderr, "'%s' not found.\n", args[0]);
 }
