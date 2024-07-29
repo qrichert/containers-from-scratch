@@ -32,6 +32,9 @@ void run(int argc, char* argv[]) {
 
     sethostname("dockus", strlen("dockus"));
 
+    chroot("./alpine_fs");
+    chdir("/");
+
     pid_t pid = fork();
     if (pid == 0) {
         execvp(args[0], args);
