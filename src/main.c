@@ -27,6 +27,7 @@ void run(int argc, char* argv[]) {
 
     unshare(
         CLONE_NEWUTS // Hostname.
+        | CLONE_NEWPID // PID.
     );
 
     sethostname("dockus", strlen("dockus"));
