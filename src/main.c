@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <sys/mount.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <sched.h>
@@ -28,6 +29,7 @@ void run(int argc, char* argv[]) {
     unshare(
         CLONE_NEWUTS // Hostname.
         | CLONE_NEWPID // PID.
+        | CLONE_NEWNS // Mounts.
     );
 
     sethostname("dockus", strlen("dockus"));
@@ -37,9 +39,11 @@ void run(int argc, char* argv[]) {
 
     pid_t pid = fork();
     if (pid == 0) {
+        mount("proc", "/proc", "proc", 0, NULL);
         execvp(args[0], args);
         fprintf(stderr, "'%s' not found.\n", args[0]);
     } else {
         waitpid(pid, NULL, 0);
+        umount("/proc");
     }
 }
