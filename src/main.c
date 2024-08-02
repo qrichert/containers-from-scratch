@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <sched.h>
 
@@ -30,6 +31,11 @@ void run(int argc, char* argv[]) {
 
     sethostname("dockus", strlen("dockus"));
 
-    execvp(args[0], args);
-    fprintf(stderr, "'%s' not found.\n", args[0]);
+    pid_t pid = fork();
+    if (pid == 0) {
+        execvp(args[0], args);
+        fprintf(stderr, "'%s' not found.\n", args[0]);
+    } else {
+        waitpid(pid, NULL, 0);
+    }
 }
